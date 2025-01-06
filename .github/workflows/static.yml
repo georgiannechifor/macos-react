@@ -18,12 +18,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Change this to your desired Node.js version
+          node-version: 18 # Change to your desired Node.js version
           cache: 'pnpm'
 
       # Step 3: Install pnpm
       - name: Install pnpm
         run: npm install -g pnpm
+        env:
+          PATH: ${{ env.PATH }}
 
       # Step 4: Install dependencies
       - name: Install Dependencies
