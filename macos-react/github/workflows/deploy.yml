@@ -13,15 +13,17 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          path: macos-react
 
       - name: Setup Node
         uses: actions/setup-node@v3
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        uses: cd macos-react | bahmutov/npm-install@v1
 
       - name: Build project
-        run: cd macos-react | npm run build
+        run: cd macos-react | pnpm run build
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
