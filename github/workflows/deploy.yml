@@ -1,49 +1,41 @@
-name: Deploy macos-react
+name: Deploy Vite Project
 
 on:
   push:
     branches:
-      - main
+      - main # Change to your default branch if different
 
 jobs:
-  build:
-    name: Build
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      # Step 1: Checkout the code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
-
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-
-      - name: Build project
-        run: npm run build
-
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
         with:
-          name: production-files
-          path: ./dist
+          node-version: 18 # Change this to your desired Node.js version
+          cache: 'pnpm'
 
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+      # Step 3: Install pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: production-files
-          path: ./dist
+      # Step 4: Install dependencies
+      - name: Install Dependencies
+        run: pnpm install
 
+      # Step 5: Build the project
+      - name: Build Project
+        run: pnpm run build
+
+      # Step 6: Deploy (Example for GitHub Pages)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./dist # Change to your build output directory if different
