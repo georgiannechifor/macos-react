@@ -1,17 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SettingsIcon from '../../assets/images/svg/settings.svg?react'
 import LocationIcon from '../../assets/images/svg/location.svg?react'
 import AnimationsIcon from '../../assets/images/svg/animations.svg?react'
 import AirdropIcon from '../../assets/images/svg/airdrop.svg?react'
 
 const SettingsDropdown = () => {
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
   const [locationActive, setLocationActive] = useState<boolean>(false)
   const [airdropActive, setAirdropActive] = useState<boolean>(false)
   const [animationsActive, setAnimationsActive] = useState<boolean>(false)
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // @ts-expect-error current is node and event target is eventTarge type
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setSettingsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   return (
-    <>
+    <div ref={wrapperRef}>
       <SettingsIcon
         height={15}
         fill="#fff"
@@ -91,7 +108,7 @@ const SettingsDropdown = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

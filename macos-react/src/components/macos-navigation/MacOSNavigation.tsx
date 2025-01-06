@@ -16,7 +16,7 @@ const MacOSNavigation = () => {
       <p>Window</p>
       <p>Help</p>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-3">
         <SettingsDropdown />
         <p>{dayjs().format('ddd MMM D HH:mm')}</p>
       </div>
